@@ -27,7 +27,7 @@ public class AutoAttack : MonoBehaviour
         {
             Transform newTarget = FindNearest();
 
-			// 타겟이 갱신됨
+		// 타겟이 갱신됨
             if (currentTarget != newTarget)
             {
                 currentTarget = newTarget;
@@ -55,29 +55,29 @@ public class AutoAttack : MonoBehaviour
     
     Transform FindNearest()
     {
-        Transform closest = null;
-        float closestDist = Mathf.Infinity;
+        Transform nearest = null;
+        float nearestDist = Mathf.Infinity;
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, weapon.range, enemyLayer);
 
         foreach (var hit in hits)
         {
             float dist = Vector2.Distance(transform.position, hit.transform.position);
-            if (dist < closestDist)
+            if (dist < nearestDist)
             {
-                closest = hit.transform;
-                closestDist = dist;
+                nearest = hit.transform;
+                nearestDist = dist;
             }
         }
-        return (closest);
+        return (nearest);
     }    
 
     IEnumerator Attack()
     {
         while (IsTargetValid(currentTarget))
         {
-            weapon.Attack(currentTarget);
             yield return new WaitForSeconds(1 / weapon.speed);
+            weapon.Attack(currentTarget);
         }
         currentTarget = null;
         attackRoutine = null;

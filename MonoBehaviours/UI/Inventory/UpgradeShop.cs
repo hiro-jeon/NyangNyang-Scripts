@@ -77,9 +77,9 @@ public class UpgradeShop : MonoBehaviour
 
     void OnSlotClicked(UpgradeSlot slot)
     {
-        Player player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        PlayerUpgrade playerUpgrade = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerUpgrade>();
 
-        player.UpgradeCharacter(slot.upgrade);
+        playerUpgrade.UpgradeCharacter(slot.upgrade);
         // slotList.Remove(slot);
         // slot.gameObject.SetActive(false);
         gameObject.SetActive(false);

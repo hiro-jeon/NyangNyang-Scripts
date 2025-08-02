@@ -36,22 +36,17 @@ public class SectorWeapon : Weapon
 
     public override void Attack(Transform target)
     {
+        Vector2 direction = (target.position - transform.position).normalized;
+
+        Quaternion rotation = Quaternion.FromToRotation(Vector2.right, direction);
+        transform.rotation = rotation;
         Damage(target);
     }
 
     void Damage(Transform target)
     {
-        Vector2 direction = (target.position - transform.position).normalized;
-
-        transform.position = this.transform.position;
-
-        Quaternion rotation = Quaternion.FromToRotation(Vector2.right, direction);
-        transform.rotation = rotation;
-
         Collider2D[] hits = new Collider2D[20];
         int count = Physics2D.OverlapCollider(GetComponent<Collider2D>(), filter, hits);
-
-        transform.rotation = Quaternion.identity;
 
         for (int i = 0; i < count; i++)
 		{
@@ -79,19 +74,38 @@ public class SectorWeapon : Weapon
         filter.useLayerMask = true;
     }
 
-    /*
-    // Debug --------------------------------------------------
+	void OnDrawGizmos()
+	{
+		if (points == null || points.Count == 0)
+		{
+			points = PointsBuilder.GetSectorPoints(
+					transform.right,
+					innerRadius,
+					outerRadius,
+					degree,
+					segments
+			);
+		}
 
-    public GameObject rendererPrefab;
-    
-    void ShowClawMarker(Vector3 position, float radius)
-    {
-        GameObject bombMarker = Instantiate(rendererPrefab, position, Quaternion.identity);
-        CircleRenderer renderer = bombMarker.GetComponent<CircleRenderer>();
+		Vector3 origin = transform.position;
+		Quaternion rotation = transform.rotation;
+		Gizmos.color = Color.green;
 
-        renderer.Initialize(radius);
-    }
+		for (int i = 0; i < points.Count - 1; i++)
+		{
+			Vector3 p1 = origin + rotation * (Vector3)points[i];
+			Vector3 p2 = origin + rotation * (Vector3)points[i + 1];
+			Gizmos.DrawLine(p1, p2);
+		}
 
-    // Debug --------------------------------------------------
-    */
+		Vector3 last = origin + rotation * (Vector3)points[points.Count - 1];
+		Vector3 first = origin + rotation * (Vector3)points[0];
+		Gizmos.DrawLine(last, first);
+
+		float length = outerRadius + 1;
+
+		Gizmos.color = Color.white;
+		Vector3 direction = transform.right;
+		Gizmos.DrawLine(origin, origin + direction * length);
+	}
 }

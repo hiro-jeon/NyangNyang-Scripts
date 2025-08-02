@@ -6,8 +6,7 @@ using UnityEngine.UI;
 public class StatsBar : MonoBehaviour
 {
     [HideInInspector]
-    public Player character;
-    public Stats stats;
+	public Player player;
 
     public Image hpMeterImage;
     public Image expMeterImage;
@@ -18,12 +17,10 @@ public class StatsBar : MonoBehaviour
 
     void Update()
     {
-        if (character != null)
-        {
-            hpMeterImage.fillAmount = stats.hitPoints / character.maxHitPoints;
-            hpText.text = "HP: " + (hpMeterImage.fillAmount * 100);
-            expMeterImage.fillAmount = stats.exPoints / character.maxExPoints;
-            levelText.text = "LV: " + stats.level;
-        }
+		Stats stats = player.stats;
+		hpMeterImage.fillAmount = stats.hitPoints / player.maxHitPoints;
+		expMeterImage.fillAmount = stats.exPoints / player.maxExPoints;
+		hpText.text = "HP: " + (hpMeterImage.fillAmount * 100);
+		levelText.text = "LV: " + stats.level;
     }
 }

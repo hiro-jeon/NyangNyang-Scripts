@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class MovementController : MonoBehaviour
 {
+    public float movementSpeed = 3.0f;
+
     public float dashForce = 10.0f;
     public float dashDuration = 1.0f;
-    public float movementSpeed = 3.0f;
+
     Vector2 movement;
 
     Animator animator;
@@ -64,6 +66,16 @@ public class MovementController : MonoBehaviour
 
     private void UpdateState()
     {
+        // 애니메이션
+        if (movement.x != 0 ||  movement.y != 0)
+        {
+            animator.SetInteger(animationState, (int)CharStates.move);
+        }
+        else
+        {
+            animator.SetInteger(animationState, (int)CharStates.idle);
+        } 
+
         /*
         // 뒤집기
         if (movement.x > 0.0f)
@@ -76,14 +88,5 @@ public class MovementController : MonoBehaviour
         }
         */
 
-        // 애니메이션
-        if (movement.x != 0 ||  movement.y != 0)
-        {
-            animator.SetInteger(animationState, (int)CharStates.move);
-        }
-        else
-        {
-            animator.SetInteger(animationState, (int)CharStates.idle);
-        } 
     }
 }
