@@ -30,23 +30,26 @@ public class MapGenerator : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player")?.transform;
-        if (player == null)
-        {
-            Debug.LogError("Player 태그가 지정된 오브젝트가 없습니다.");
-            enabled = false;
-            return;
-        }
-        GenerateChunksAroundPlayer();
+        GenerateChunks(Vector3.zero);
     }
 
     void Update()
     {
-        GenerateChunksAroundPlayer();
+		if (player == null)
+		{
+			player = GameObject.FindGameObjectWithTag("Player")?.transform;
+		}
+		else
+		{
+        	GenerateChunks(player.position);
+		}
     }
 
-    void GenerateChunksAroundPlayer()
+
+	
+    void GenerateChunks(Vector3 position)
     {
-        Vector2Int currentChunk = WorldToChunkCoord(player.position);
+        Vector2Int currentChunk = WorldToChunkCoord(position);
 
         for (int dx = -1; dx <= 1; dx++)
         {
